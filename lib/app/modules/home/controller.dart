@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   // observe-able variable
   final RxList<Task> tasks = <Task>[].obs;
   final RxInt chipIndex = 0.obs;
+  final RxBool isDeleting = false.obs;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController todoTitleController;
@@ -32,6 +33,9 @@ class HomeController extends GetxController {
   }
 
   void changeChipIndex(int index) => chipIndex.value = index;
+  void changeDeleting(bool deleting) {
+    isDeleting.value = deleting;
+  }
 
   // add task to tasks list
   bool addTask(Task task) {
@@ -41,5 +45,10 @@ class HomeController extends GetxController {
 
     tasks.add(task);
     return true;
+  }
+
+  // delete task from tasks list
+  void deleteTask(Task task) {
+    tasks.remove(task);
   }
 }

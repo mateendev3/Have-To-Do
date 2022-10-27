@@ -16,8 +16,8 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = HexColor.fromHex(task.color);
     return Container(
-      width: 1.0.sw,
-      height: 1.0.sw,
+      width: 1.0.sw / 2,
+      height: 1.0.sw / 2,
       margin: EdgeInsets.all(8.0.w),
       decoration: BoxDecoration(
         color: Colors.white,
