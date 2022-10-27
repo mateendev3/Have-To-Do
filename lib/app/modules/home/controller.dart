@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:have_to_do/app/data/models/task.dart';
+import '../../data/models/task.dart';
 import '../../data/services/storage/repository.dart';
 
 class HomeController extends GetxController {
@@ -9,11 +9,13 @@ class HomeController extends GetxController {
   }) : _tasksRepository = taskRepository;
 
   final TaskRepository _tasksRepository;
+
   // observe-able variable
   final RxList<Task> tasks = <Task>[].obs;
+  final RxInt chipIndex = 0.obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController todoTitleController;
-  final RxInt chipIndex = 0.obs;
 
   @override
   void onInit() {

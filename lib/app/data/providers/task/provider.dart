@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import '../../../core/utils/keys.dart';
 import '../../models/task.dart';
