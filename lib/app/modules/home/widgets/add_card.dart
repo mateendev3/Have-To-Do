@@ -4,9 +4,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:have_to_do/app/core/utils/extensions.dart';
-import 'package:have_to_do/app/core/values/colors.dart';
-import 'package:have_to_do/app/widgets/icons.dart';
+import '../../../core/values/colors.dart';
 import '../../../data/models/task.dart';
+import '../../../widgets/icons.dart';
 import '../controller.dart';
 
 class AddCard extends StatelessWidget {
@@ -54,38 +54,7 @@ class AddCard extends StatelessWidget {
             children: [
               _buildTitleTextField(),
               _buildChoiceChipList(),
-              ElevatedButton(
-                onPressed: () {
-                  if (_homeController.formKey.currentState!.validate()) {
-                    int icon = getIcons()
-                        .elementAt(_homeController.chipIndex.value)
-                        .icon!
-                        .codePoint;
-                    String color = getIcons()
-                        .elementAt(_homeController.chipIndex.value)
-                        .color!
-                        .toHex();
-                    String title = _homeController.todoTitleController.text;
-                    Task task = Task(title: title, icon: icon, color: color);
-
-                    // poping back
-                    Get.back();
-
-                    // showing status (success or error)
-                    _homeController.addTask(task)
-                        ? EasyLoading.showSuccess('Task Created')
-                        : EasyLoading.showError('Duplicated Task');
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: blue,
-                  minimumSize: const Size(160.0, 40.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0.r),
-                  ),
-                ),
-                child: const Text('Confirm'),
-              ),
+              _buildConfirmButton(),
             ],
           ),
         ),
@@ -137,5 +106,40 @@ class AddCard extends StatelessWidget {
             .toList(),
       ),
     );
+  }
+
+  Widget _buildConfirmButton() {
+    return ElevatedButton(
+      onPressed: onDialogConfirmButtonPress,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: blue,
+        minimumSize: const Size(160.0, 40.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.0.r),
+        ),
+      ),
+      child: const Text('Confirm'),
+    );
+  }
+
+  void onDialogConfirmButtonPress() {
+    if (_homeController.formKey.currentState!.validate()) {
+      int icon =
+          getIcons().elementAt(_homeController.chipIndex.value).icon!.codePoint;
+      String color =
+          getIcons().elementAt(_homeController.chipIndex.value).color!.toHex();
+      String title = _homeController.todoTitleController.text;
+
+      // creating task
+      Task task = Task(title: title, icon: icon, color: color);
+
+      // poping back
+      Get.back();
+
+      // showing status (success or error)
+      _homeController.addTask(task)
+          ? EasyLoading.showSuccess('Task Created')
+          : EasyLoading.showError('Duplicated Task');
+    }
   }
 }
