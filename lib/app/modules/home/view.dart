@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:have_to_do/app/modules/home/widgets/add_card.dart';
+import 'package:get/get.dart';
+import 'package:have_to_do/app/modules/home/controller.dart';
+import 'package:have_to_do/app/modules/home/widgets/task_card.dart';
+import 'widgets/add_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -21,14 +24,19 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            children: [
-              AddCard(),
-            ],
-          ),
+          Obx(() {
+            return GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              children: [
+                ...controller.tasks
+                    .map((task) => TaskCard(task: task))
+                    .toList(),
+                AddCard(),
+              ],
+            );
+          }),
         ],
       ),
     );
