@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:have_to_do/app/modules/home/widgets/add_dialog.dart';
 import '../../core/values/colors.dart';
 import '../../data/models/task.dart';
 import 'controller.dart';
 import 'widgets/add_card.dart';
+import 'widgets/add_dialog.dart';
 import 'widgets/task_card.dart';
 
 class HomePage extends GetView<HomeController> {
