@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:have_to_do/app/core/utils/extensions.dart';
@@ -36,7 +37,7 @@ class AddDialog extends StatelessWidget {
       iconTheme: const IconThemeData(color: Colors.grey),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: onDoneButtonPressed,
           style: ButtonStyle(
             overlayColor: MaterialStateProperty.all(Colors.transparent),
           ),
@@ -65,21 +66,24 @@ class AddDialog extends StatelessWidget {
   Widget _buildTitleTextField() {
     return Padding(
       padding: EdgeInsets.all(8.0.w),
-      child: TextFormField(
-        controller: _homeController.todoTitleController,
-        autofocus: true,
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
+      child: Form(
+        key: _homeController.formKey,
+        child: TextFormField(
+          controller: _homeController.todoTitleController,
+          autofocus: true,
+          decoration: InputDecoration(
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            hintText: 'Title here',
           ),
-          hintText: 'Title here',
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter your task title';
+            }
+            return null;
+          },
         ),
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'Please enter your task title';
-          }
-          return null;
-        },
       ),
     );
   }
@@ -131,5 +135,28 @@ class AddDialog extends StatelessWidget {
     _homeController.todoTitleController.clear();
     _homeController.changeTask(null);
     return true;
+  }
+
+  void onDoneButtonPressed() {
+    if (_homeController.formKey.currentState!.validate()) {
+      if (_homeController.task.value == null) {
+        EasyLoading.showError('Please select task type');
+      } else {
+        bool isSuccessfullyAdded = _homeController.updateTask(
+          _homeController.task.value!,
+          _homeController.todoTitleController.text,
+        );
+
+        if (isSuccessfullyAdded) {
+          EasyLoading.showSuccess('Todo added');
+          Get.back();
+          _homeController.changeTask(null);
+        } else {
+          EasyLoading.showError('Todo already exist');
+        }
+
+        _homeController.todoTitleController.clear();
+      }
+    }
   }
 }

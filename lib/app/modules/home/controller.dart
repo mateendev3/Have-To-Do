@@ -14,11 +14,12 @@ class HomeController extends GetxController {
   final RxList<Task> tasks = <Task>[].obs;
   final RxInt chipIndex = 0.obs;
   final RxBool isDeleting = false.obs;
-  final Rx<Task?> task = Rx<Task?>(null); // obs //Todo: prob
+  final Rx<Task?> task = Rx<Task?>(null); // obs
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController todoTitleController;
 
+  // Life cycles methods
   @override
   void onInit() {
     super.onInit();
@@ -33,6 +34,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+  // changing obs
   void changeChipIndex(int index) => chipIndex.value = index;
   void changeDeleting(bool deleting) => isDeleting.value = deleting;
   void changeTask(Task? selectedTask) => task.value = selectedTask;
@@ -50,5 +52,34 @@ class HomeController extends GetxController {
   // delete task from tasks list
   void deleteTask(Task task) {
     tasks.remove(task);
+  }
+
+  // update task from tasks list
+  bool updateTask(Task task, String title) {
+    List<dynamic> todos = task.todos ?? [];
+
+    // checking weather the todo with this title exists or not
+    if (containTodo(todos, title)) return false;
+
+    // adding new todo to the list
+    final newTodo = {'title': title, 'done': false};
+    todos.add(newTodo);
+
+    // updating task
+    Task updatedTask = task.copyWith(todos: todos);
+
+    // getting the index of previous task in the tasks list
+    int oldTaskIndex = tasks.indexOf(task);
+
+    // updating new task with old one
+    tasks[oldTaskIndex] = updatedTask;
+
+    tasks.refresh();
+    return true;
+  }
+
+  // checking weather the todo with this title exists or not
+  bool containTodo(List<dynamic> todos, String title) {
+    return todos.any((todoMap) => todoMap['title'] == title);
   }
 }
