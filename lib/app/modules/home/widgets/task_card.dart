@@ -8,21 +8,26 @@ import '../../detail/view.dart';
 import '../controller.dart';
 
 class TaskCard extends StatelessWidget {
-  TaskCard({Key? key, required this.task}) : super(key: key);
-  final HomeController _homeController = Get.find<HomeController>();
+  TaskCard({
+    Key? key,
+    required Task task,
+  })  : _task = task,
+        super(key: key);
 
-  final Task task;
+  final HomeController _homeController = Get.find<HomeController>();
+  final Task _task;
 
   @override
   Widget build(BuildContext context) {
-    final color = HexColor.fromHex(task.color);
+    final color = HexColor.fromHex(_task.color);
     return _buildBody(color);
   }
 
   Widget _buildBody(Color color) {
     return GestureDetector(
       onTap: () {
-        _homeController.task.value = task;
+        _homeController.task.value = _task;
+        _homeController.changeTodos(_task.todos ?? []);
         Get.to(() => DetailPage());
       },
       child: Container(
@@ -53,7 +58,7 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget _buildStepProgressIndicator() {
-    final color = HexColor.fromHex(task.color);
+    final color = HexColor.fromHex(_task.color);
     return StepProgressIndicator(
       totalSteps: 100,
       currentStep: 80,
@@ -77,7 +82,7 @@ class TaskCard extends StatelessWidget {
       padding: EdgeInsets.all(16.0.w),
       child: Icon(
         IconData(
-          task.icon,
+          _task.icon,
           fontFamily: 'MaterialIcons',
         ),
         color: color,
@@ -92,7 +97,7 @@ class TaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            task.title,
+            _task.title,
             style: TextStyle(
               fontSize: 16.0.sp,
               fontWeight: FontWeight.bold,
@@ -101,7 +106,7 @@ class TaskCard extends StatelessWidget {
           ),
           SizedBox(height: 4.0.w),
           Text(
-            '${task.todos?.length ?? 0} Tasks',
+            '${_task.todos?.length ?? 0} Tasks',
             style: TextStyle(
               fontSize: 16.0.sp,
               fontWeight: FontWeight.bold,

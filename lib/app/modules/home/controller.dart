@@ -16,6 +16,9 @@ class HomeController extends GetxController {
   final RxBool isDeleting = false.obs;
   final Rx<Task?> task = Rx<Task?>(null); // obs
 
+  final RxList<dynamic> uncompletedTodos = <dynamic>[].obs;
+  final RxList<dynamic> completedTodos = <dynamic>[].obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController todoTitleController;
 
@@ -39,6 +42,7 @@ class HomeController extends GetxController {
   void changeDeleting(bool deleting) => isDeleting.value = deleting;
   void changeTask(Task? selectedTask) => task.value = selectedTask;
 
+  //* Task Type
   // add task to tasks list
   bool addTask(Task task) {
     if (tasks.contains(task)) {
@@ -81,5 +85,20 @@ class HomeController extends GetxController {
   // checking weather the todo with this title exists or not
   bool containTodo(List<dynamic> todos, String title) {
     return todos.any((todoMap) => todoMap['title'] == title);
+  }
+
+  //* Todos
+  // changing todos dynamically for showing completed or un-completed
+  void changeTodos(List<dynamic> selectedTaskTodos) {
+    completedTodos.clear();
+    uncompletedTodos.clear();
+    for (var todo in selectedTaskTodos) {
+      bool status = todo['done'];
+      if (status) {
+        completedTodos.add(todo);
+      } else {
+        uncompletedTodos.add(todo);
+      }
+    }
   }
 }
