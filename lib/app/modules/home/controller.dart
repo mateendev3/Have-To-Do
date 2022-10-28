@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/task.dart';
@@ -87,6 +88,21 @@ class HomeController extends GetxController {
     return todos.any((todoMap) => todoMap['title'] == title);
   }
 
+  // updating done or un-done todos to specific task
+  void updateTaskTodos() {
+    final newTodos = <Map<String, dynamic>>[];
+    newTodos.addAll(
+      [
+        ...uncompletedTodos,
+        ...completedTodos,
+      ],
+    );
+    Task newTask = task.value!.copyWith(todos: newTodos);
+    int oldTaskIndex = tasks.indexOf(task.value);
+    tasks[oldTaskIndex] = newTask;
+    tasks.refresh();
+  }
+
   //* Todos
   // changing todos dynamically for showing completed or un-completed
   void changeTodos(List<dynamic> selectedTaskTodos) {
@@ -100,5 +116,39 @@ class HomeController extends GetxController {
         uncompletedTodos.add(todo);
       }
     }
+  }
+
+  // adding todo to uncompletedTodo list
+  bool addTodo(String todoTitle) {
+    // checking if todo is already available in uncompleted todos
+    final uncompletedTodo = {'title': todoTitle, 'done': false};
+    if (uncompletedTodos.any(
+      (unCompletedTodo) => mapEquals<String, dynamic>(
+        uncompletedTodo,
+        unCompletedTodo,
+      ),
+    )) {
+      print(false);
+      return false;
+    }
+
+    // checking if todo is already available in completed todos
+    final completedTodo = {'title': todoTitle, 'done': true};
+    if (completedTodos.any(
+      (doneTodo) => mapEquals<String, dynamic>(
+        completedTodo,
+        doneTodo,
+      ),
+    )) {
+      print(false);
+
+      return false;
+    }
+
+    // adding todo to uncompleted todos
+    uncompletedTodos.add(uncompletedTodo);
+    print(true);
+
+    return true;
   }
 }
