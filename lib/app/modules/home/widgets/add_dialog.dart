@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/core/utils/extensions.dart';
 import '../../../core/values/colors.dart';
+import '../../../data/models/task.dart';
 import '../controller.dart';
 
 class AddDialog extends StatelessWidget {
@@ -11,13 +13,18 @@ class AddDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: ListView(
-        children: [
-          _buildTitle(),
-          _buildTitleTextField(),
-        ],
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: ListView(
+          children: [
+            _buildTitle(),
+            _buildTitleTextField(),
+            _buildAddToSubTitle(),
+            ..._buildTaskTypeItems(),
+          ],
+        ),
       ),
     );
   }
@@ -75,5 +82,54 @@ class AddDialog extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _buildAddToSubTitle() {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 12.0.w,
+        left: 8.0.w,
+        right: 8.0.w,
+        bottom: 8.0.w,
+      ),
+      child: Text(
+        'Add To',
+        style: TextStyle(
+          fontSize: 16.0.sp,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildTaskTypeItems() {
+    return [
+      ..._homeController.tasks
+          .map(
+            (Task task) => Obx(
+              () {
+                return ListTile(
+                  title: Text(task.title),
+                  onTap: () => _homeController.changeTask(task),
+                  leading: Icon(
+                    IconData(task.icon, fontFamily: 'MaterialIcons'),
+                    color: HexColor.fromHex(task.color),
+                  ),
+                  trailing: _homeController.task.value == task
+                      ? const Icon(Icons.check, color: Colors.blue)
+                      : const SizedBox(),
+                );
+              },
+            ),
+          )
+          .toList(),
+    ];
+  }
+
+  Future<bool> onWillPop() async {
+    _homeController.todoTitleController.clear();
+    _homeController.changeTask(null);
+    return true;
   }
 }
