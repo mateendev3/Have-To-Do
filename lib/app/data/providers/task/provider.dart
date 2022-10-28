@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import '../../../core/utils/keys.dart';
@@ -11,7 +12,7 @@ class TaskProvider {
     log('## readTask provider');
     // ignore: todo
     // TODO: jsonDecode
-    return (_service.read(keyTasks) as List<dynamic>)
+    return ((jsonDecode(_service.read(keyTasks))) as List<dynamic>)
         .map((taskMap) => Task.fromMap(taskMap))
         .toList();
   }

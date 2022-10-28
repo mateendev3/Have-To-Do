@@ -40,32 +40,34 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildTodos() {
-    return Obx(() {
-      return GridView.count(
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        children: [
-          ...controller.tasks.map(
-            (task) {
-              return LongPressDraggable<Task>(
-                data: task,
-                onDragStarted: () => controller.changeDeleting(true),
-                onDraggableCanceled: (_, __) =>
-                    controller.changeDeleting(false),
-                onDragEnd: (_) => controller.changeDeleting(false),
-                feedback: Opacity(
-                  opacity: 0.8,
+    return Obx(
+      () {
+        return GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          children: [
+            ...controller.tasks.map(
+              (task) {
+                return LongPressDraggable<Task>(
+                  data: task,
+                  onDragStarted: () => controller.changeDeleting(true),
+                  onDraggableCanceled: (_, __) =>
+                      controller.changeDeleting(false),
+                  onDragEnd: (_) => controller.changeDeleting(false),
+                  feedback: Opacity(
+                    opacity: 0.8,
+                    child: TaskCard(task: task),
+                  ),
                   child: TaskCard(task: task),
-                ),
-                child: TaskCard(task: task),
-              );
-            },
-          ).toList(),
-          AddCard(),
-        ],
-      );
-    });
+                );
+              },
+            ).toList(),
+            AddCard(),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildFAB() {
