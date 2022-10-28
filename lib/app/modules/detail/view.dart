@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/modules/detail/widgets/completed_todo_list.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
 import '../../data/models/task.dart';
 import '../home/controller.dart';
+import 'widgets/uncompleted_todo_list.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({super.key});
@@ -23,8 +25,21 @@ class DetailPage extends StatelessWidget {
             _buildTitle(),
             _buildProgressIndicator(),
             _buildAddTodoTextField(),
+            UncompletedTodoList(),
+            if (_homeController.uncompletedTodos.isNotEmpty) _buildDivider(),
+            CompletedTodoList(),
           ],
         ),
+      ),
+    );
+  }
+
+  Padding _buildDivider() {
+    return Padding(
+      padding: EdgeInsets.all(8.0.w),
+      child: Divider(
+        color: Colors.grey,
+        height: 3.0.w,
       ),
     );
   }

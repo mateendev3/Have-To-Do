@@ -128,7 +128,6 @@ class HomeController extends GetxController {
         unCompletedTodo,
       ),
     )) {
-      print(false);
       return false;
     }
 
@@ -140,15 +139,30 @@ class HomeController extends GetxController {
         doneTodo,
       ),
     )) {
-      print(false);
-
       return false;
     }
 
     // adding todo to uncompleted todos
     uncompletedTodos.add(uncompletedTodo);
-    print(true);
 
     return true;
+  }
+
+  void doneTodo(String uncompletedTodoTitle) {
+    // removing uncompleted todo form uncompleted todo list
+    final uncompletedTodo = {'title': uncompletedTodoTitle, 'done': false};
+    int uncompletedTodoIndex = uncompletedTodos.indexWhere(
+      (unCompletedTodo) => mapEquals<String, dynamic>(
+        uncompletedTodo,
+        unCompletedTodo,
+      ),
+    );
+    uncompletedTodos.removeAt(uncompletedTodoIndex);
+    // adding uncompleted todo to completed todo list (its now completed)
+    final completedTodo = {'title': uncompletedTodos, 'done': true};
+    completedTodos.add(completedTodo);
+
+    completedTodos.refresh();
+    uncompletedTodos.refresh();
   }
 }
