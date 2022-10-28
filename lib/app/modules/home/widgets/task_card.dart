@@ -1,42 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:have_to_do/app/core/utils/extensions.dart';
-import 'package:have_to_do/app/data/models/task.dart';
-import 'package:have_to_do/app/modules/home/controller.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import '../../../core/utils/extensions.dart';
+import '../../../data/models/task.dart';
+import '../../detail/view.dart';
+import '../controller.dart';
 
 class TaskCard extends StatelessWidget {
   TaskCard({Key? key, required this.task}) : super(key: key);
+  final HomeController _homeController = Get.find<HomeController>();
 
   final Task task;
-  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     final color = HexColor.fromHex(task.color);
-    return Container(
-      width: 1.0.sw / 2,
-      height: 1.0.sw / 2,
-      margin: EdgeInsets.all(8.0.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 7.0,
-            offset: const Offset(0, 7.0),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildStepProgressIndicator(),
-          _buildIcon(color),
-          const Expanded(child: SizedBox()),
-          _buildTitleAndTotalTasksText(),
-        ],
+    return _buildBody(color);
+  }
+
+  Widget _buildBody(Color color) {
+    return GestureDetector(
+      onTap: () {
+        _homeController.task.value = task;
+        Get.to(() => DetailPage());
+      },
+      child: Container(
+        width: 1.0.sw / 2,
+        height: 1.0.sw / 2,
+        margin: EdgeInsets.all(8.0.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 7.0,
+              offset: const Offset(0, 7.0),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildStepProgressIndicator(),
+            _buildIcon(color),
+            const Expanded(child: SizedBox()),
+            _buildTitleAndTotalTasksText(),
+          ],
+        ),
       ),
     );
   }

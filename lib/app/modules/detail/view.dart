@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/core/utils/extensions.dart';
+import 'package:have_to_do/app/data/models/task.dart';
 import '../home/controller.dart';
 
 class DetailPage extends StatelessWidget {
@@ -9,8 +12,16 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: ListView(
+          children: [
+            _buildTitle(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -20,5 +31,28 @@ class DetailPage extends StatelessWidget {
       elevation: 0.0,
       iconTheme: const IconThemeData(color: Colors.grey),
     );
+  }
+
+  Widget _buildTitle() {
+    Task task = _homeController.task.value!;
+    return ListTile(
+      leading: Icon(
+        IconData(task.icon, fontFamily: 'MaterialIcons'),
+        color: HexColor.fromHex(task.color),
+      ),
+      horizontalTitleGap: 0.0,
+      title: Text(
+        task.title,
+        style: TextStyle(
+          fontSize: 18.0.sp,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Future<bool> onWillPop() async {
+    _homeController.changeTask(null);
+    return true;
   }
 }
