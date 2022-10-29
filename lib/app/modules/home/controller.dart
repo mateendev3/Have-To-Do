@@ -14,6 +14,7 @@ class HomeController extends GetxController {
   // observe-able variable
   final RxList<Task> tasks = <Task>[].obs;
   final RxInt chipIndex = 0.obs;
+  final RxInt bottomNavBarIndex = 0.obs;
   final RxBool isDeleting = false.obs;
   final Rx<Task?> task = Rx<Task?>(null); // obs
 
@@ -42,6 +43,7 @@ class HomeController extends GetxController {
   void changeChipIndex(int index) => chipIndex.value = index;
   void changeDeleting(bool deleting) => isDeleting.value = deleting;
   void changeTask(Task? selectedTask) => task.value = selectedTask;
+  void changeBottomBarIndex(int index) => bottomNavBarIndex.value = index;
 
   //* Task Type
   // add task to tasks list
@@ -106,6 +108,30 @@ class HomeController extends GetxController {
   // check wether the task todos is empty.
   bool isTaskTodosEmpty(Task task) {
     return task.todos == null || task.todos!.isEmpty;
+  }
+
+  // get total number of
+  int getTotalTasksTodosNumber() {
+    int totalTasksTodos = 0;
+    for (var task in tasks) {
+      if (task.todos != null) totalTasksTodos++;
+    }
+    return totalTasksTodos;
+  }
+
+  // Todo: yahan say continue karna.
+  int getCompletedTasksTodosNumber() {
+    int completedTasksTodos = 0;
+    for (var task in tasks) {
+      if (task.todos != null) {
+        for (var todoMap in task.todos!) {
+          if (todoMap['done'] == true) {
+            completedTasksTodos++;
+          }
+        }
+      }
+    }
+    return completedTasksTodos;
   }
 
   //* Todos

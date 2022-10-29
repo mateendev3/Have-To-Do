@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/modules/report/view.dart';
 import '../../core/values/colors.dart';
 import '../../data/models/task.dart';
 import 'controller.dart';
@@ -14,15 +15,35 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  Widget _buildBody() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: ListView(
+      body: Obx(() {
+        return IndexedStack(
+          index: controller.bottomNavBarIndex.value,
+          children: [
+            _buildHome(),
+            ReportPage(),
+          ],
+        );
+      }),
+      floatingActionButton: _buildFAB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  SafeArea _buildHome() {
+    return SafeArea(
+      child: ListView(
         children: [
           _buildTitle(),
           _buildTasks(),
         ],
       ),
-      floatingActionButton: _buildFAB(),
     );
   }
 
@@ -95,6 +116,36 @@ class HomePage extends GetView<HomeController> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Obx(
+      () => BottomNavigationBar(
+        onTap: (bottomBarIndex) =>
+            controller.changeBottomBarIndex(bottomBarIndex),
+        currentIndex: controller.bottomNavBarIndex.value,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: blue,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Padding(
+              padding: EdgeInsets.only(right: 16.0.w),
+              child: const Icon(Icons.apps),
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
+              child: const Icon(Icons.data_usage),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
