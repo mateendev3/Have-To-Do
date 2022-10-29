@@ -103,6 +103,11 @@ class HomeController extends GetxController {
     tasks.refresh();
   }
 
+  // check wether the task todos is empty.
+  bool isTaskTodosEmpty(Task task) {
+    return task.todos == null || task.todos!.isEmpty;
+  }
+
   //* Todos
   // changing todos dynamically for showing completed or un-completed
   void changeTodos(List<dynamic> selectedTaskTodos) {
@@ -181,5 +186,16 @@ class HomeController extends GetxController {
     );
     completedTodos.removeAt(oldTodoIndex);
     completedTodos.refresh();
+  }
+
+  // get total done todos for specific task
+  int getDoneTodosNumber(Task task) {
+    int doneTodos = 0;
+    for (var todoMap in task.todos!) {
+      if (todoMap['done'] == true) {
+        doneTodos++;
+      }
+    }
+    return doneTodos;
   }
 }

@@ -19,7 +19,7 @@ class HomePage extends GetView<HomeController> {
       body: ListView(
         children: [
           _buildTitle(),
-          _buildTodos(),
+          _buildTasks(),
         ],
       ),
       floatingActionButton: _buildFAB(),
@@ -39,7 +39,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildTodos() {
+  Widget _buildTasks() {
     return Obx(
       () {
         return GridView.count(

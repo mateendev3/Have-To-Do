@@ -60,8 +60,11 @@ class TaskCard extends StatelessWidget {
   Widget _buildStepProgressIndicator() {
     final color = HexColor.fromHex(_task.color);
     return StepProgressIndicator(
-      totalSteps: 100,
-      currentStep: 80,
+      totalSteps:
+          _homeController.isTaskTodosEmpty(_task) ? 1 : _task.todos!.length,
+      currentStep: _homeController.isTaskTodosEmpty(_task)
+          ? 0
+          : _homeController.getDoneTodosNumber(_task),
       size: 5.0,
       padding: 0.0,
       selectedGradientColor: LinearGradient(

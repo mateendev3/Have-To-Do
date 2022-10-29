@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:have_to_do/app/core/values/colors.dart';
+import '../../../core/values/colors.dart';
 import '../../home/controller.dart';
 
 class CompletedTodoList extends StatelessWidget {
