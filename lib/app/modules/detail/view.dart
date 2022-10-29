@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/core/values/colors.dart';
 import 'package:have_to_do/app/modules/detail/widgets/completed_todo_list.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
@@ -125,9 +126,9 @@ class DetailPage extends StatelessWidget {
             ),
             suffixIcon: IconButton(
               onPressed: onCheckIconButtonTap,
-              icon: Icon(
+              icon: const Icon(
                 Icons.check,
-                color: Colors.grey.shade400,
+                color: blue,
               ),
             ),
           ),

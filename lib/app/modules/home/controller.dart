@@ -175,4 +175,18 @@ class HomeController extends GetxController {
     completedTodos.refresh();
     uncompletedTodos.refresh();
   }
+
+  // delete the done todo.
+  void deletedDoneTodo(String doneTodoTitle) {
+    final doneTodo = {'title': doneTodoTitle, 'done': true};
+
+    int oldTodoIndex = completedTodos.indexWhere(
+      (completedTodo) => mapEquals<String, dynamic>(
+        doneTodo,
+        completedTodo,
+      ),
+    );
+    completedTodos.removeAt(oldTodoIndex);
+    completedTodos.refresh();
+  }
 }

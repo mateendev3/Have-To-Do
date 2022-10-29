@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:have_to_do/app/core/values/colors.dart';
 import '../../home/controller.dart';
 
 class CompletedTodoList extends StatelessWidget {
@@ -31,15 +32,29 @@ class CompletedTodoList extends StatelessWidget {
   List<Widget> _buildCompletedTodoListItems() {
     return _homeController.completedTodos.map(
       (completedTodo) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-          child: ListTile(
-            leading: const Icon(Icons.check),
-            horizontalTitleGap: 0.0,
-            title: Text(
-              completedTodo['title'],
-              style: const TextStyle(
-                decoration: TextDecoration.lineThrough,
+        return Dismissible(
+          key: ObjectKey(completedTodo),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) =>
+              _homeController.deletedDoneTodo(completedTodo['title']),
+          background: Container(
+            color: Colors.red,
+            alignment: Alignment.centerRight,
+            child: const Icon(Icons.delete, color: Colors.white),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+            child: ListTile(
+              leading: const Icon(
+                Icons.check,
+                color: blue,
+              ),
+              horizontalTitleGap: 0.0,
+              title: Text(
+                completedTodo['title'],
+                style: const TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                ),
               ),
             ),
           ),
