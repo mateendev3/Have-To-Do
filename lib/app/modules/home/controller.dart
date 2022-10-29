@@ -120,6 +120,7 @@ class HomeController extends GetxController {
 
   // adding todo to uncompletedTodo list
   bool addTodo(String todoTitle) {
+    print('*** -> $todoTitle');
     // checking if todo is already available in uncompleted todos
     final uncompletedTodo = {'title': todoTitle, 'done': false};
     if (uncompletedTodos.any(
@@ -143,12 +144,15 @@ class HomeController extends GetxController {
     }
 
     // adding todo to uncompleted todos
+    print('before --> ${uncompletedTodos.toString()}');
     uncompletedTodos.add(uncompletedTodo);
+    print('after --> ${uncompletedTodos.toString()}');
 
     return true;
   }
 
   void doneTodo(String uncompletedTodoTitle) {
+    print('*** $uncompletedTodoTitle');
     // removing uncompleted todo form uncompleted todo list
     final uncompletedTodo = {'title': uncompletedTodoTitle, 'done': false};
     int uncompletedTodoIndex = uncompletedTodos.indexWhere(
@@ -157,10 +161,16 @@ class HomeController extends GetxController {
         unCompletedTodo,
       ),
     );
+
+    print('before del*** $uncompletedTodos');
     uncompletedTodos.removeAt(uncompletedTodoIndex);
+    print('after del*** $uncompletedTodos');
+
     // adding uncompleted todo to completed todo list (its now completed)
-    final completedTodo = {'title': uncompletedTodos, 'done': true};
+    print('before add*** $completedTodos');
+    final completedTodo = {'title': uncompletedTodoTitle, 'done': true};
     completedTodos.add(completedTodo);
+    print('after add*** $completedTodos');
 
     completedTodos.refresh();
     uncompletedTodos.refresh();

@@ -23,8 +23,8 @@ class UncompletedTodoList extends StatelessWidget {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       children: [
-        ..._homeController.uncompletedTodos.map(
-          (uncompletedTodo) => CheckboxListTile(
+        ..._homeController.uncompletedTodos.map((uncompletedTodo) {
+          return CheckboxListTile(
             value: false,
             onChanged: (value) {
               _homeController.doneTodo(uncompletedTodo['title']);
@@ -32,7 +32,12 @@ class UncompletedTodoList extends StatelessWidget {
             checkColor: Colors.grey,
             title: Text(uncompletedTodo['title']),
             controlAffinity: ListTileControlAffinity.leading,
-          ),
+          );
+        }),
+        Obx(
+          () => _homeController.uncompletedTodos.isNotEmpty
+              ? _buildDivider()
+              : const SizedBox(),
         ),
       ],
     );
@@ -61,6 +66,16 @@ class UncompletedTodoList extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: EdgeInsets.all(8.0.w),
+      child: Divider(
+        color: Colors.grey,
+        height: 3.0.w,
       ),
     );
   }

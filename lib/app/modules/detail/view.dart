@@ -26,20 +26,9 @@ class DetailPage extends StatelessWidget {
             _buildProgressIndicator(),
             _buildAddTodoTextField(),
             UncompletedTodoList(),
-            if (_homeController.uncompletedTodos.isNotEmpty) _buildDivider(),
             CompletedTodoList(),
           ],
         ),
-      ),
-    );
-  }
-
-  Padding _buildDivider() {
-    return Padding(
-      padding: EdgeInsets.all(8.0.w),
-      child: Divider(
-        color: Colors.grey,
-        height: 3.0.w,
       ),
     );
   }
